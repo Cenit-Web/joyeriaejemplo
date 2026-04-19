@@ -25,9 +25,10 @@
             background-color: var(--gris-extra-claro);
             color: var(--negro);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* --- SECCIÓN DE BIENVENIDA (HERO) --- */
+        /* --- HERO --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -35,7 +36,7 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1573408302355-010350593f63?q=80&w=2000&auto=format&fit=crop'); /* Imagen de fondo elegante */
+                        url('https://images.unsplash.com/photo-1573408302355-010350593f63?q=80&w=2000&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             color: var(--blanco);
@@ -59,7 +60,6 @@
             font-size: 2rem;
             animation: bounce 2s infinite;
             color: var(--gris-plata);
-            text-decoration: none;
             cursor: pointer;
         }
 
@@ -124,6 +124,22 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--gris-medio);
+        }
+
+        /* --- MENSAJE NO RESULTADOS --- */
+        #no-results {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gris-medio);
+            font-size: 1.2rem;
+        }
+
+        #no-results i {
+            display: block;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
         }
 
         /* --- GRID DE PRODUCTOS --- */
@@ -208,7 +224,7 @@
     <header id="catalogo">
         <div class="header-container">
             <a href="#" class="logo">joyería/ejemplo</a>
-            <span>México</span>
+            <span style="font-size: 0.8rem; letter-spacing: 1px;">MÉXICO</span>
         </div>
     </header>
 
@@ -219,9 +235,13 @@
         </div>
     </div>
 
+    <div id="no-results">
+        <i class="fas fa-search-minus"></i>
+        No se encontraron resultados para tu búsqueda.
+    </div>
+
     <main>
-        <div class="products-grid">
-            
+        <div class="products-grid" id="grid">
             <div class="product-card">
                 <div class="product-image"><i class="fas fa-link"></i></div>
                 <div class="product-details">
@@ -271,23 +291,33 @@
                     <div class="product-footer">ID: 33842</div>
                 </div>
             </div>
-
         </div>
     </main>
 
     <footer>
         <p>&copy; 2026 joyería/ejemplo. Puebla, México.</p>
-        <p style="opacity: 0.5; margin-top: 10px;">Desarrollado por Cenit Digital Studio</p>
+        <p style="opacity: 0.5; margin-top: 10px; letter-spacing: 1px;">Desarrollado por <strong>Cenit.Web</strong></p>
     </footer>
 
     <script>
         document.getElementById('searchJoyas').addEventListener('keyup', function() {
             let filter = this.value.toUpperCase();
             let cards = document.querySelectorAll('.product-card');
+            let noResults = document.getElementById('no-results');
+            let visibleCount = 0;
+
             cards.forEach(card => {
                 let text = card.innerText.toUpperCase();
-                card.style.display = text.includes(filter) ? "" : "none";
+                if(text.includes(filter)) {
+                    card.style.display = "";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
             });
+
+            // Mostrar u ocultar la leyenda de "No hay resultados"
+            noResults.style.display = (visibleCount === 0) ? "block" : "none";
         });
     </script>
 </body>
